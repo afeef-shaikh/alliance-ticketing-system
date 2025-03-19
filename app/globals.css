@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 142 70% 45%;
+    --primary-foreground: 355 100% 100%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 142 70% 45%;
+
+    --radius: 1rem;
+
+    /* Alliance brand colors in pastel */
+    --alliance-green-pastel: 142 70% 85%;
+    --alliance-red-pastel: 0 84% 85%;
+    --alliance-yellow-pastel: 48 100% 85%;
+    --alliance-blue-pastel: 195 100% 85%;
+    --alliance-orange-pastel: 30 100% 85%;
+
+    /* Ticket priority colors */
+    --priority-critical: 0 84% 85%;
+    --priority-high: 30 100% 85%;
+    --priority-medium: 48 100% 85%;
+    --priority-low: 142 70% 85%;
+
+    /* Ticket status colors */
+    --status-open: 270 100% 85%;
+    --status-onhold: 30 100% 85%;
+    --status-resolved: 142 70% 85%;
+    --status-closed: 240 10% 85%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 142 70% 45%;
+    --primary-foreground: 355 100% 100%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 142 70% 45%;
+
+    /* Alliance brand colors in pastel (dark mode) */
+    --alliance-green-pastel: 142 40% 45%;
+    --alliance-red-pastel: 0 60% 45%;
+    --alliance-yellow-pastel: 48 70% 45%;
+    --alliance-blue-pastel: 195 70% 45%;
+    --alliance-orange-pastel: 30 70% 45%;
+
+    /* Ticket priority colors (dark mode) */
+    --priority-critical: 0 60% 45%;
+    --priority-high: 30 70% 45%;
+    --priority-medium: 48 70% 45%;
+    --priority-low: 142 40% 45%;
+
+    /* Ticket status colors (dark mode) */
+    --status-open: 270 70% 45%;
+    --status-onhold: 30 70% 45%;
+    --status-resolved: 142 40% 45%;
+    --status-closed: 240 10% 45%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.priority-critical {
+  @apply bg-[hsl(var(--priority-critical))];
+}
+
+.priority-high {
+  @apply bg-[hsl(var(--priority-high))];
+}
+
+.priority-medium {
+  @apply bg-[hsl(var(--priority-medium))];
+}
+
+.priority-low {
+  @apply bg-[hsl(var(--priority-low))];
+}
+
+.status-open {
+  @apply bg-[hsl(var(--status-open))];
+}
+
+.status-onhold {
+  @apply bg-[hsl(var(--status-onhold))];
+}
+
+.status-resolved {
+  @apply bg-[hsl(var(--status-resolved))];
+}
+
+.status-closed {
+  @apply bg-[hsl(var(--status-closed))];
+}
+
