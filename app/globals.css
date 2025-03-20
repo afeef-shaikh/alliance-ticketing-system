@@ -145,3 +145,285 @@
   @apply bg-[hsl(var(--status-closed))];
 }
 
+/* Animated background waves */
+.wave {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+  left: 0;
+  z-index: 0;
+}
+
+.wave1 {
+  background: linear-gradient(45deg, hsl(var(--alliance-green-pastel)), hsl(var(--alliance-blue-pastel)));
+  animation: wave 15s linear infinite;
+  z-index: 1;
+  opacity: 0.2;
+  animation-delay: 0s;
+  bottom: 0;
+  border-radius: 40%;
+}
+
+.wave2 {
+  background: linear-gradient(45deg, hsl(var(--alliance-yellow-pastel)), hsl(var(--alliance-green-pastel)));
+  animation: wave 25s linear infinite;
+  z-index: 2;
+  opacity: 0.1;
+  animation-delay: -5s;
+  bottom: 0;
+  border-radius: 43%;
+}
+
+.wave3 {
+  background: linear-gradient(45deg, hsl(var(--alliance-blue-pastel)), hsl(var(--alliance-red-pastel)));
+  animation: wave 35s linear infinite;
+  z-index: 3;
+  opacity: 0.1;
+  animation-delay: -2s;
+  bottom: 0;
+  border-radius: 46%;
+}
+
+.wave4 {
+  background: linear-gradient(45deg, hsl(var(--alliance-orange-pastel)), hsl(var(--alliance-yellow-pastel)));
+  animation: wave 45s linear infinite;
+  z-index: 4;
+  opacity: 0.1;
+  animation-delay: -10s;
+  bottom: 0;
+  border-radius: 49%;
+}
+
+@keyframes wave {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Floating circles */
+.floating-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.2;
+  z-index: 1;
+}
+
+.circle1 {
+  width: 100px;
+  height: 100px;
+  background-color: hsl(var(--alliance-green-pastel));
+  top: 10%;
+  left: 10%;
+  animation: float 8s ease-in-out infinite;
+}
+
+.circle2 {
+  width: 150px;
+  height: 150px;
+  background-color: hsl(var(--alliance-blue-pastel));
+  top: 20%;
+  right: 15%;
+  animation: float 12s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+.circle3 {
+  width: 80px;
+  height: 80px;
+  background-color: hsl(var(--alliance-yellow-pastel));
+  bottom: 15%;
+  left: 20%;
+  animation: float 10s ease-in-out infinite;
+  animation-delay: -5s;
+}
+
+.circle4 {
+  width: 120px;
+  height: 120px;
+  background-color: hsl(var(--alliance-red-pastel));
+  bottom: 25%;
+  right: 10%;
+  animation: float 14s ease-in-out infinite;
+  animation-delay: -7s;
+}
+
+.circle5 {
+  width: 60px;
+  height: 60px;
+  background-color: hsl(var(--alliance-orange-pastel));
+  top: 50%;
+  left: 50%;
+  animation: float 16s ease-in-out infinite;
+  animation-delay: -9s;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-20px) translateX(10px);
+  }
+  50% {
+    transform: translateY(0) translateX(20px);
+  }
+  75% {
+    transform: translateY(20px) translateX(10px);
+  }
+  100% {
+    transform: translateY(0) translateX(0);
+  }
+}
+
+/* AI Chatbot styles */
+.chatbot-trigger {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+  transition: all 0.3s ease;
+}
+
+.chatbot-trigger:hover {
+  transform: scale(1.05);
+}
+
+.chatbot-container {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 350px;
+  height: 500px;
+  background-color: hsl(var(--background));
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+}
+
+.chatbot-header {
+  padding: 16px;
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chatbot-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.chatbot-message {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.chatbot-message-bot {
+  align-self: flex-start;
+  background-color: hsl(var(--muted));
+  color: hsl(var(--muted-foreground));
+  border-bottom-left-radius: 4px;
+}
+
+.chatbot-message-user {
+  align-self: flex-end;
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  border-bottom-right-radius: 4px;
+}
+
+.chatbot-input {
+  display: flex;
+  padding: 12px;
+  border-top: 1px solid hsl(var(--border));
+}
+
+.chatbot-input input {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 24px;
+  border: 1px solid hsl(var(--border));
+  outline: none;
+  font-size: 14px;
+}
+
+.chatbot-input button {
+  margin-left: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+}
+
+/* Sparkle animation for chatbot icon */
+.sparkle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: white;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sparkle1 {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.sparkle2 {
+  animation: sparkle 2s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.sparkle3 {
+  animation: sparkle 2s ease-in-out infinite;
+  animation-delay: 0.6s;
+}
+
+@keyframes sparkle {
+  0% {
+    transform: scale(0) translate(0, 0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translate(20px, -20px);
+    opacity: 0;
+  }
+}
+
