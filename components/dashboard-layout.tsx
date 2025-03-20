@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
@@ -32,15 +32,176 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Badge } from "@/components/ui/badge"
 import { ModeToggle } from "@/components/mode-toggle"
+import { useToast } from "@/hooks/use-toast"
 
 interface DashboardLayoutProps {
   children: React.ReactNode
   userType: "user" | "admin"
 }
 
+interface Notification {
+  id: string
+  title: string
+  time: Date
+  read: boolean
+}
+
 export function DashboardLayout({ children, userType }: DashboardLayoutProps) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
+  const { toast } = useToast()
+
+  // Improve notification system
+  const [notifications, setNotifications] = useState<Notification[]>([
+    {
+      id: "T-1234",
+      title: "Ticket #1234 Updated",
+      time: new Date(Date.now() - 2 * 60 * 1000), // 2 minutes ago
+      read: false,
+    },
+    {
+      id: "T-5678",
+      title: "Ticket #5678 Resolved",
+      time: new Date(Date.now() - 60 * 60 * 1000), // 1 hour ago
+      read: false,
+    },
+    {
+      id: "T-9012",
+      title: "New comment on Ticket #9012",
+      time: new Date(Date.now() - 3 * 60 * 60 * 1000), // 3 hours ago
+      read: false,
+    },
+  ])
+
+  // Add notification listeners for various events
+  useEffect(() => {
+    // Ticket events
+    const handleNewTicket = (event: Event) => {
+      const customEvent = event as CustomEvent<{ id: string; title: string }>
+      const newNotification = {
+        id: customEvent.detail.id,
+        title: `New ticket created: ${customEvent.detail.title}`,
+        time: new Date(),
+        read: false,
+      }
+      setNotifications((prev) => [newNotification, ...prev])
+
+      // Show toast notification
+      toast({
+        title: "New Ticket",
+        description: `Ticket ${customEvent.detail.id} has been created.`,
+      })
+    }
+
+    const handleTicketUpdated = (event: Event) => {
+      const customEvent = event as CustomEvent<{ id: string; status: string }>
+      const newNotification = {
+        id: customEvent.detail.id,
+        title: `Ticket ${customEvent.detail.id} status changed to ${customEvent.detail.status}`,
+        time: new Date(),
+        read: false,
+      }
+      setNotifications((prev) => [newNotification, ...prev])
+
+      // Show toast notification
+      toast({
+        title: "Ticket Updated",
+        description: `Ticket ${customEvent.detail.id} status changed to ${customEvent.detail.status}.`,
+      })
+    }
+
+    const handleTicketAssigned = (event: Event) => {
+      const customEvent = event as CustomEvent<{ id: string; assignee: string }>
+      const newNotification = {
+        id: customEvent.detail.id,
+        title: `Ticket ${customEvent.detail.id} assigned to ${customEvent.detail.assignee}`,
+        time: new Date(),
+        read: false,
+      }
+      setNotifications((prev) => [newNotification, ...prev])
+
+      // Show toast notification
+      toast({
+        title: "Ticket Assigned",
+        description: `Ticket ${customEvent.detail.id} assigned to ${customEvent.detail.assignee}.`,
+      })
+    }
+
+    // User events
+    const handleUserAdded = (event: Event) => {
+      const customEvent = event as CustomEvent<{ id: string; name: string; action: string }>
+      const newNotification = {
+        id: customEvent.detail.id,
+        title: `New user added: ${customEvent.detail.name}`,
+        time: new Date(),
+        read: false,
+      }
+      setNotifications((prev) => [newNotification, ...prev])
+
+      // Show toast notification
+      toast({
+        title: "User Added",
+        description: `${customEvent.detail.name} has been added to the system.`,
+      })
+    }
+
+    const handleUserUpdated = (event: Event) => {
+      const customEvent = event as CustomEvent<{ id: string; name: string; action: string }>
+      const newNotification = {
+        id: customEvent.detail.id,
+        title: `User ${customEvent.detail.name} has been ${customEvent.detail.action}`,
+        time: new Date(),
+        read: false,
+      }
+      setNotifications((prev) => [newNotification, ...prev])
+    }
+
+    const handlePasswordReset = (event: Event) => {
+      const customEvent = event as CustomEvent<{ id: string; name: string; action: string }>
+      const newNotification = {
+        id: customEvent.detail.id,
+        title: `Password reset for ${customEvent.detail.name}`,
+        time: new Date(),
+        read: false,
+      }
+      setNotifications((prev) => [newNotification, ...prev])
+    }
+
+    const handleUserStatusChanged = (event: Event) => {
+      const customEvent = event as CustomEvent<{ id: string; name: string; action: string }>
+      const newNotification = {
+        id: customEvent.detail.id,
+        title: `User ${customEvent.detail.name} has been ${customEvent.detail.action}`,
+        time: new Date(),
+        read: false,
+      }
+      setNotifications((prev) => [newNotification, ...prev])
+    }
+
+    // Add event listeners
+    window.addEventListener("newTicketCreated", handleNewTicket)
+    window.addEventListener("ticketUpdated", handleTicketUpdated)
+    window.addEventListener("ticketAssigned", handleTicketAssigned)
+    window.addEventListener("userAdded", handleUserAdded)
+    window.addEventListener("userUpdated", handleUserUpdated)
+    window.addEventListener("passwordReset", handlePasswordReset)
+    window.addEventListener("userStatusChanged", handleUserStatusChanged)
+
+    return () => {
+      // Remove event listeners
+      window.removeEventListener("newTicketCreated", handleNewTicket)
+      window.removeEventListener("ticketUpdated", handleTicketUpdated)
+      window.removeEventListener("ticketAssigned", handleTicketAssigned)
+      window.removeEventListener("userAdded", handleUserAdded)
+      window.removeEventListener("userUpdated", handleUserUpdated)
+      window.removeEventListener("passwordReset", handlePasswordReset)
+      window.removeEventListener("userStatusChanged", handleUserStatusChanged)
+    }
+  }, [toast])
+
+  const markAllAsRead = () => {
+    setNotifications((prev) => prev.map((notification) => ({ ...notification, read: true })))
+  }
 
   const userNavItems = [
     { name: "Dashboard", href: "/dashboard/user", icon: LayoutDashboard },
@@ -83,33 +244,53 @@ export function DashboardLayout({ children, userType }: DashboardLayoutProps) {
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon" className="relative">
                 <Bell className="h-5 w-5" />
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-alliance-red text-white">
-                  3
-                </Badge>
+                {notifications.filter((n) => !n.read).length > 0 && (
+                  <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-alliance-red text-white">
+                    {notifications.filter((n) => !n.read).length}
+                  </Badge>
+                )}
                 <span className="sr-only">Notifications</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+            <DropdownMenuContent align="end" className="w-80">
+              <DropdownMenuLabel className="flex items-center justify-between">
+                <span>Notifications</span>
+                {notifications.filter((n) => !n.read).length > 0 && (
+                  <Badge variant="outline" className="ml-2">
+                    {notifications.filter((n) => !n.read).length} new
+                  </Badge>
+                )}
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <div className="flex flex-col gap-1">
-                  <span className="font-medium">Ticket #1234 Updated</span>
-                  <span className="text-xs text-muted-foreground">2 minutes ago</span>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <div className="flex flex-col gap-1">
-                  <span className="font-medium">Ticket #5678 Resolved</span>
-                  <span className="text-xs text-muted-foreground">1 hour ago</span>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <div className="flex flex-col gap-1">
-                  <span className="font-medium">New comment on Ticket #9012</span>
-                  <span className="text-xs text-muted-foreground">3 hours ago</span>
-                </div>
-              </DropdownMenuItem>
+              <div className="max-h-[300px] overflow-y-auto">
+                {notifications.length > 0 ? (
+                  notifications.map((notification) => (
+                    <DropdownMenuItem key={notification.id + notification.time.getTime()} className="cursor-pointer">
+                      <div className="flex flex-col gap-1 py-1 w-full">
+                        <div className="flex items-start justify-between">
+                          <span className={`font-medium ${!notification.read ? "text-primary" : ""}`}>
+                            {notification.title}
+                          </span>
+                          {!notification.read && <Badge className="ml-2 h-2 w-2 rounded-full p-0 bg-alliance-red" />}
+                        </div>
+                        <span className="text-xs text-muted-foreground">
+                          {formatNotificationTime(notification.time)}
+                        </span>
+                      </div>
+                    </DropdownMenuItem>
+                  ))
+                ) : (
+                  <div className="py-3 px-2 text-center text-muted-foreground text-sm">No notifications</div>
+                )}
+              </div>
+              {notifications.length > 0 && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="justify-center cursor-pointer" onClick={markAllAsRead}>
+                    <span className="text-xs">Mark all as read</span>
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
           <ModeToggle />
@@ -199,5 +380,19 @@ export function DashboardLayout({ children, userType }: DashboardLayoutProps) {
       </div>
     </div>
   )
+}
+
+// Helper function for formatting notification time
+const formatNotificationTime = (date: Date) => {
+  const now = new Date()
+  const diffMs = now.getTime() - date.getTime()
+  const diffMins = Math.floor(diffMs / (1000 * 60))
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+
+  if (diffMins < 1) return "Just now"
+  if (diffMins < 60) return `${diffMins} minute${diffMins === 1 ? "" : "s"} ago`
+  if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? "" : "s"} ago`
+  return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`
 }
 
